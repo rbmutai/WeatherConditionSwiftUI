@@ -18,6 +18,7 @@
 		714BD9262D40F1AE0052ACCF /* WeatherConditionSwiftUIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9252D40F1AE0052ACCF /* WeatherConditionSwiftUIUITestsLaunchTests.swift */; };
 		714BD9332D40F5420052ACCF /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9322D40F5420052ACCF /* Weather.swift */; };
 		714BD9352D40F5700052ACCF /* LocationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9342D40F5700052ACCF /* LocationDetail.swift */; };
+		714BD9372D40F5DC0052ACCF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9362D40F5DC0052ACCF /* APIService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		714BD9252D40F1AE0052ACCF /* WeatherConditionSwiftUIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherConditionSwiftUIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		714BD9322D40F5420052ACCF /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		714BD9342D40F5700052ACCF /* LocationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetail.swift; sourceTree = "<group>"; };
+		714BD9362D40F5DC0052ACCF /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				714BD90C2D40F1AD0052ACCF /* Persistence.swift */,
 				714BD9322D40F5420052ACCF /* Weather.swift */,
 				714BD9342D40F5700052ACCF /* LocationDetail.swift */,
+				714BD9362D40F5DC0052ACCF /* APIService.swift */,
 				714BD90E2D40F1AD0052ACCF /* WeatherConditionSwiftUI.xcdatamodeld */,
 				714BD9092D40F1AD0052ACCF /* Preview Content */,
 			);
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				714BD90D2D40F1AD0052ACCF /* Persistence.swift in Sources */,
+				714BD9372D40F5DC0052ACCF /* APIService.swift in Sources */,
 				714BD9062D40F1AC0052ACCF /* ContentView.swift in Sources */,
 				714BD9102D40F1AD0052ACCF /* WeatherConditionSwiftUI.xcdatamodeld in Sources */,
 				714BD9352D40F5700052ACCF /* LocationDetail.swift in Sources */,
