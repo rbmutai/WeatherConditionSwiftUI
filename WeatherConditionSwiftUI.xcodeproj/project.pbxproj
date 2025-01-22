@@ -26,6 +26,7 @@
 		714BD9462D40F7720052ACCF /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9452D40F7720052ACCF /* WeatherViewModel.swift */; };
 		714BD9482D40F8F00052ACCF /* FavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9472D40F8F00052ACCF /* FavouritesViewModel.swift */; };
 		714BD94A2D40F93A0052ACCF /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9492D40F93A0052ACCF /* MapAnnotation.swift */; };
+		714BD94C2D40FCE30052ACCF /* LocationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD94B2D40FCE30052ACCF /* LocationServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		714BD9452D40F7720052ACCF /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		714BD9472D40F8F00052ACCF /* FavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewModel.swift; sourceTree = "<group>"; };
 		714BD9492D40F93A0052ACCF /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		714BD94B2D40FCE30052ACCF /* LocationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				714BD9052D40F1AC0052ACCF /* ContentView.swift */,
 				714BD9452D40F7720052ACCF /* WeatherViewModel.swift */,
 				714BD9472D40F8F00052ACCF /* FavouritesViewModel.swift */,
+				714BD94B2D40FCE30052ACCF /* LocationServices.swift */,
 				714BD9072D40F1AD0052ACCF /* Assets.xcassets */,
 				714BD90C2D40F1AD0052ACCF /* Persistence.swift */,
 				714BD9322D40F5420052ACCF /* Weather.swift */,
@@ -314,6 +317,7 @@
 				714BD9392D40F6310052ACCF /* MockAPIService.swift in Sources */,
 				714BD9352D40F5700052ACCF /* LocationDetail.swift in Sources */,
 				714BD9042D40F1AC0052ACCF /* WeatherConditionSwiftUIApp.swift in Sources */,
+				714BD94C2D40FCE30052ACCF /* LocationServices.swift in Sources */,
 				714BD9332D40F5420052ACCF /* Weather.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
