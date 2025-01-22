@@ -19,6 +19,8 @@ class WeatherViewModel: ObservableObject {
     @Published var city = ""
     @Published var showActivityIndicator = false
     @Published var errorMessage = ""
+    @Published var showAlert = false
+    @Published var showConfirmAlert = false
     @Published var currentTemperature = ""
     @Published var minimumTemperature = ""
     @Published var maximumTemperature = ""
@@ -90,12 +92,16 @@ class WeatherViewModel: ObservableObject {
         switch error {
             case ResultError.network:
                 errorMessage = "Network error"
+                showAlert = true
             case ResultError.parsing:
                 errorMessage = "Parsing error"
+                showAlert = true
             case ResultError.data:
                 errorMessage = "Data error"
+                showAlert = true
             default:
                 errorMessage = "Error: \(error.localizedDescription)"
+                showAlert = true
         }
     }
     
@@ -193,7 +199,10 @@ class WeatherViewModel: ObservableObject {
         }
         
     }
-    
+    func confirmLocation() {
+        errorMessage = "Save \(city) to favourites?"
+        showConfirmAlert = true
+    }
     func saveLocation() {
         if latitude != 0.0 && longitude != 0.0 {
             persistence.saveFavouriteLocation(city: city, street: street, province: province, latitude: latitude, longitude: longitude)
