@@ -25,6 +25,7 @@
 		714BD9432D40F6F10052ACCF /* LocationDetailData.json in Resources */ = {isa = PBXBuildFile; fileRef = 714BD9422D40F6F10052ACCF /* LocationDetailData.json */; };
 		714BD9462D40F7720052ACCF /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9452D40F7720052ACCF /* WeatherViewModel.swift */; };
 		714BD9482D40F8F00052ACCF /* FavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9472D40F8F00052ACCF /* FavouritesViewModel.swift */; };
+		714BD94A2D40F93A0052ACCF /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9492D40F93A0052ACCF /* MapAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		714BD9422D40F6F10052ACCF /* LocationDetailData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LocationDetailData.json; sourceTree = "<group>"; };
 		714BD9452D40F7720052ACCF /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		714BD9472D40F8F00052ACCF /* FavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewModel.swift; sourceTree = "<group>"; };
+		714BD9492D40F93A0052ACCF /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				714BD90C2D40F1AD0052ACCF /* Persistence.swift */,
 				714BD9322D40F5420052ACCF /* Weather.swift */,
 				714BD9342D40F5700052ACCF /* LocationDetail.swift */,
+				714BD9492D40F93A0052ACCF /* MapAnnotation.swift */,
 				714BD9362D40F5DC0052ACCF /* APIService.swift */,
 				714BD9382D40F6310052ACCF /* MockAPIService.swift */,
 				714BD9442D40F72B0052ACCF /* MockData */,
@@ -305,6 +308,7 @@
 				714BD90D2D40F1AD0052ACCF /* Persistence.swift in Sources */,
 				714BD9462D40F7720052ACCF /* WeatherViewModel.swift in Sources */,
 				714BD9372D40F5DC0052ACCF /* APIService.swift in Sources */,
+				714BD94A2D40F93A0052ACCF /* MapAnnotation.swift in Sources */,
 				714BD9062D40F1AC0052ACCF /* ContentView.swift in Sources */,
 				714BD9102D40F1AD0052ACCF /* WeatherConditionSwiftUI.xcdatamodeld in Sources */,
 				714BD9392D40F6310052ACCF /* MockAPIService.swift in Sources */,
