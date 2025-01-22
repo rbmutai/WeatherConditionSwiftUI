@@ -10,7 +10,7 @@ import Combine
 import CoreLocation
 class LocationServices: NSObject, CLLocationManagerDelegate, ObservableObject {
     let locationManager = CLLocationManager()
-    @Published var coordinate: CLLocation?
+    @Published var coordinate: CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
     @Published var errorMessage = ""
     @Published var showErrorAlert = false
     override init() {
