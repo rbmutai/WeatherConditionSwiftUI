@@ -15,7 +15,7 @@ enum ConditionTheme: String {
     case none
 }
 
-class WeatherViewModel {
+class WeatherViewModel: ObservableObject {
     @Published var city = ""
     @Published var showActivityIndicator = false
     @Published var errorMessage = ""

@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 import MapKit
-class FavouritesViewModel {
+class FavouritesViewModel: ObservableObject {
     
     @Published var favouriteLocations: [FavouriteLocationDetail] = []
     @Published var errorMessage = ""
