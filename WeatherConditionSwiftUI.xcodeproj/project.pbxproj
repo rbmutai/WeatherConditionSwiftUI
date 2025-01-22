@@ -23,6 +23,7 @@
 		714BD93D2D40F6A00052ACCF /* CurrentWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = 714BD93C2D40F6A00052ACCF /* CurrentWeather.json */; };
 		714BD93F2D40F6BA0052ACCF /* ForcastWeather.json in Resources */ = {isa = PBXBuildFile; fileRef = 714BD93E2D40F6BA0052ACCF /* ForcastWeather.json */; };
 		714BD9432D40F6F10052ACCF /* LocationDetailData.json in Resources */ = {isa = PBXBuildFile; fileRef = 714BD9422D40F6F10052ACCF /* LocationDetailData.json */; };
+		714BD9462D40F7720052ACCF /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9452D40F7720052ACCF /* WeatherViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		714BD93C2D40F6A00052ACCF /* CurrentWeather.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CurrentWeather.json; sourceTree = "<group>"; };
 		714BD93E2D40F6BA0052ACCF /* ForcastWeather.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ForcastWeather.json; sourceTree = "<group>"; };
 		714BD9422D40F6F10052ACCF /* LocationDetailData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LocationDetailData.json; sourceTree = "<group>"; };
+		714BD9452D40F7720052ACCF /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 			children = (
 				714BD9032D40F1AC0052ACCF /* WeatherConditionSwiftUIApp.swift */,
 				714BD9052D40F1AC0052ACCF /* ContentView.swift */,
+				714BD9452D40F7720052ACCF /* WeatherViewModel.swift */,
 				714BD9072D40F1AD0052ACCF /* Assets.xcassets */,
 				714BD90C2D40F1AD0052ACCF /* Persistence.swift */,
 				714BD9322D40F5420052ACCF /* Weather.swift */,
@@ -296,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				714BD90D2D40F1AD0052ACCF /* Persistence.swift in Sources */,
+				714BD9462D40F7720052ACCF /* WeatherViewModel.swift in Sources */,
 				714BD9372D40F5DC0052ACCF /* APIService.swift in Sources */,
 				714BD9062D40F1AC0052ACCF /* ContentView.swift in Sources */,
 				714BD9102D40F1AD0052ACCF /* WeatherConditionSwiftUI.xcdatamodeld in Sources */,
