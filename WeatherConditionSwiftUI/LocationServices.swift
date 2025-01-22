@@ -39,7 +39,8 @@ class LocationServices: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-                 errorMessage = " Failed to get location: \(error.localizedDescription)"
+            errorMessage = " Failed to get location: \(error.localizedDescription)"
+            showErrorAlert = true
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -47,6 +48,7 @@ class LocationServices: NSObject, CLLocationManagerDelegate, ObservableObject {
         switch locationManager.authorizationStatus {
         case .restricted, .denied:
                 errorMessage = " Location Services Disabled. Please enable Location Services in Settings in order to get location based weather information"
+                showErrorAlert = true
             case .authorizedWhenInUse:
                 locationManager.startUpdatingLocation()
             default:
