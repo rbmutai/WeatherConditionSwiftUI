@@ -9,16 +9,32 @@ import SwiftUI
 
 
 struct ContentView: View {
-   
-
+    @State  var selectedTab : Int = 1
     var body: some View {
-        VStack{
-            Text("Weather Condition")
+        TabView (selection: $selectedTab){
+            
+            WeatherView(viewModel: WeatherViewModel(apiService: APIService()), locationService: LocationServices())
+                .tabItem {
+                    VStack{
+                        Image(systemName: "cloud.sun.fill")
+                        Text("Weather")
+                    }
+                }.tag(1)
+           
+
+            FavouritesView(viewModel: FavouritesViewModel(), locationService: LocationServices())
+                .tabItem {
+                    VStack{
+                        Image(systemName: "heart.fill")
+                        Text("Favourites")
+                    }
+                }.tag(2)
+            
         }
     }
 }
 
 
 #Preview {
-    ContentView()
+    ContentView(selectedTab: 1)
 }
