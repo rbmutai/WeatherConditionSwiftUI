@@ -18,60 +18,11 @@ struct FavouritesView: View {
     )
     var body: some View {
         VStack {
-            if #available(iOS 17.0, *) {
-                Text("Favourite Locations")
-                    .font(.system(size: 25))
-                    .fontWeight(.semibold)
-                    .onChange(of: locationService.coordinate) {
-                        updateMapPosition(coordinates: locationService.coordinate.coordinate)
-                    }
-            } else {
-                // Fallback on earlier versions
-                Text("Favourite Locations")
-                    .font(.system(size: 25))
-                    .fontWeight(.semibold)
-                    .onChange(of: locationService.coordinate) { _ in
-                        updateMapPosition(coordinates: locationService.coordinate.coordinate)
-                    }
-            }
-            List {
-                ForEach(viewModel.favouriteLocations, id: \.self) { item in
-                    HStack {
-                        Text(item.city)
-                    }
-                    .padding([.leading, .trailing],12)
-                    .swipeActions(allowsFullSwipe: false) {
-                        Button {
-                            updateMapPosition(coordinates: CLLocationCoordinate2DMake(item.latitude, item.longitude))
-                        } label: {
-                            Label("View", systemImage: "eye.fill")
-                        }
-                        .tint(.indigo)
-                        
-                        Button(role: .destructive) {
-                            viewModel.deleteFavouriteLocation(city: item.city)
-                            viewModel.loadFavouriteLocations()
-                        } label: {
-                            Label("Delete", systemImage: "trash.fill")
-                        }
-                    }
-                }
-               
-            }
-            .overlay {
-                if viewModel.favouriteLocations.isEmpty {
-                    Text("No Locations Saved")
-                }
-            }
+            headerView
             
-            Map(position: $position, content: {
-                ForEach(viewModel.mapAnnotations, id: \.self) { item in
-                    Marker(item.title ?? "", coordinate: item.coordinate)
-                }
-                UserAnnotation()
-            })
-            .frame(height: 450)
-                
+            favouriteLocationsView
+            
+            mapView
             
         }
         .onAppear {
@@ -92,6 +43,70 @@ struct FavouritesView: View {
                          span: MKCoordinateSpan(latitudeDelta: 6, longitudeDelta: 6)
                      )
                  )
+    }
+    
+    // MARK: - Views
+    private var mapView: some View {
+        Map(position: $position, content: {
+            ForEach(viewModel.mapAnnotations, id: \.self) { item in
+                Marker(item.title ?? "", coordinate: item.coordinate)
+            }
+            UserAnnotation()
+        })
+        .frame(height: 450)
+    }
+    
+    private var favouriteLocationsView: some View {
+        List {
+            ForEach(viewModel.favouriteLocations, id: \.self) { item in
+                HStack {
+                    Text(item.city)
+                }
+                .padding([.leading, .trailing],12)
+                .swipeActions(allowsFullSwipe: false) {
+                    Button {
+                        updateMapPosition(coordinates: CLLocationCoordinate2DMake(item.latitude, item.longitude))
+                    } label: {
+                        Label("View", systemImage: "eye.fill")
+                    }
+                    .tint(.indigo)
+                    
+                    Button(role: .destructive) {
+                        viewModel.deleteFavouriteLocation(city: item.city)
+                        viewModel.loadFavouriteLocations()
+                    } label: {
+                        Label("Delete", systemImage: "trash.fill")
+                    }
+                }
+            }
+           
+        }
+        .overlay {
+            if viewModel.favouriteLocations.isEmpty {
+                Text("No Locations Saved")
+            }
+        }
+    }
+    
+    private var headerView: some View {
+        VStack {
+            if #available(iOS 17.0, *) {
+                Text("Favourite Locations")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .onChange(of: locationService.coordinate) {
+                        updateMapPosition(coordinates: locationService.coordinate.coordinate)
+                    }
+            } else {
+                // Fallback on earlier versions
+                Text("Favourite Locations")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .onChange(of: locationService.coordinate) { _ in
+                        updateMapPosition(coordinates: locationService.coordinate.coordinate)
+                    }
+            }
+        }
     }
 }
 
