@@ -14,8 +14,8 @@
             filePath = "WeatherConditionSwiftUI/WeatherViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "updateCurrentWeatherDetails(current:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -30,6 +30,8 @@ class WeatherViewModel: ObservableObject {
     @Published var lastChecked = ""
     @Published var refreshEnabled = true
     @Published var weatherTheme: ConditionTheme = .none
+    @Published var backgroundColor = "Cloudy"
+    @Published var backgroundImage = "seaCloudy"
     @Published var forcastDetail: [ForcastDetail] = []
     private var subscribers = Set<AnyCancellable>()
     var latitude = 0.0
@@ -171,6 +173,9 @@ class WeatherViewModel: ObservableObject {
         maximumTemperature = "\(current.main.tempMax)º"
         conditions = current.weather[0].description.uppercased()
         weatherTheme = getWeatherTheme(conditions: conditions.lowercased())
+        let backgroundDetail = getWeatherBackground(theme: weatherTheme)
+        backgroundColor = backgroundDetail.colorName
+        backgroundImage = backgroundDetail.imageName
         city = current.name ?? ""
         lastChecked = Date().formatted(date: .abbreviated, time: .shortened)
         persistence.saveCurrentWeather(currentTemperature: currentTemperature, maximumTemperature: maximumTemperature, minimumTemperature: minimumTemperature, conditions: conditions.lowercased())
@@ -286,11 +291,11 @@ class WeatherViewModel: ObservableObject {
     func getWeatherBackground(theme: ConditionTheme)-> (imageName: String, colorName: String) {
         switch theme {
         case .cloud:
-            return ("forestCloudy", "Cloudy")
+            return ("seaCloudy", "Cloudy")
         case .rain:
-            return ("forestRainy","Rainy")
+            return ("seaRainy","Rainy")
         case .clear:
-            return ("forestSunny","Sunny")
+            return ("seaSunny","Sunny")
         case .none:
             return ("clear","None")
         }

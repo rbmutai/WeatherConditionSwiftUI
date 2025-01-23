@@ -37,7 +37,7 @@ struct Forcast: Decodable {
     let list: [Current]
 }
 
-struct ForcastDetail {
+struct ForcastDetail: Hashable {
     let day: String
     let theme: ConditionTheme
     let temperature: String
