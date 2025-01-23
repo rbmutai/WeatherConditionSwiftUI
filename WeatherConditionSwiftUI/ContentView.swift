@@ -10,11 +10,10 @@ import SwiftUI
 
 struct ContentView: View {
     @State  var selectedTab : Int = 1
-    @ObservedObject var locationService = LocationServices()
     var body: some View {
         TabView (selection: $selectedTab){
             
-            WeatherView(viewModel: WeatherViewModel(apiService: APIService()), locationService: locationService)
+            WeatherView(viewModel: WeatherViewModel(apiService: APIService()), locationService: LocationServices())
                 .tabItem {
                     VStack{
                         Image(systemName: "cloud.sun.fill")
@@ -23,7 +22,7 @@ struct ContentView: View {
                 }.tag(1)
            
 
-            FavouritesView(viewModel: FavouritesViewModel(), locationService: locationService)
+            FavouritesView(viewModel: FavouritesViewModel(), locationService: LocationServices())
                 .tabItem {
                     VStack{
                         Image(systemName: "heart.fill")

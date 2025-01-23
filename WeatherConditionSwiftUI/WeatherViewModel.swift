@@ -40,7 +40,6 @@ class WeatherViewModel: ObservableObject {
     let apiService: APIServiceProtocol
     init(apiService: APIServiceProtocol) {
         self.apiService = apiService
-        loadSavedData()
     }
     
     
