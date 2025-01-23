@@ -14,11 +14,72 @@ struct WeatherView: View {
         ScrollView {
             ZStack(alignment: .top) {
                 VStack {
-                    Image(viewModel.backgroundImage)
-                        .resizable()
-                        .frame(height: 330, alignment: .center)
                     
-                    List {
+                    ZStack(alignment: .center) {
+                        Image(viewModel.backgroundImage)
+                            .resizable()
+                            .frame(height: 330, alignment: .center)
+                       
+                        VStack(spacing: 10) {
+                            Text(viewModel.currentTemperature)
+                                .fontWeight(.bold)
+                                .font(.system(size: 25))
+                            Text(viewModel.conditions)
+                                .fontWeight(.bold)
+                                .font(.system(size: 20))
+       
+                                VStack(spacing: 8){
+                                    Group {
+                                        Text(viewModel.lastChecked)
+                                            .fontWeight(.semibold)
+                                            .font(.system(size: 16))
+                                        Text(viewModel.street)
+                                            .fontWeight(.semibold)
+                                            .font(.system(size: 16))
+                                        Text(viewModel.city)
+                                            .fontWeight(.semibold)
+                                            .font(.system(size: 16))
+                                        Text(viewModel.province)
+                                            .fontWeight(.semibold)
+                                            .font(.system(size: 16))
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding([.leading], 8)
+                                    
+                                }.padding([.top], 8)
+                               
+                        }
+                        .foregroundStyle(.white)
+                        
+                    }
+                    
+                    HStack {
+                        VStack {
+                            Text(viewModel.minimumTemperature)
+                                .fontWeight(.bold)
+                            Text("min")
+                        }
+                        Spacer()
+                        VStack {
+                            Text(viewModel.currentTemperature)
+                                .fontWeight(.bold)
+                            Text("Current")
+                        }
+                        Spacer()
+                        VStack {
+                            Text(viewModel.maximumTemperature)
+                                .fontWeight(.bold)
+                            Text("max")
+                        }
+                        
+                    }
+                    .foregroundStyle(.white)
+                    .padding([.leading, .trailing, .top], 8)
+                    
+                    Divider()
+                        .frame(minHeight: 1)
+                        .overlay(Color.white)
+                  
                         ForEach(viewModel.forcastDetail, id: \.self) { item in
                             
                             HStack {
@@ -30,16 +91,13 @@ struct WeatherView: View {
                                     .frame(width: 40, height: 40)
                                 Spacer()
                                 Text(item.temperature)
+                                    .frame(width: 80, alignment: .trailing)
                                    
-                            }.foregroundStyle(.white)
+                            }
+                            .padding([.leading, .trailing],12)
+                            .foregroundStyle(.white)
                             
                         }
-                        .listRowBackground(Color.clear)
-                            
-                    }
-                    .scrollContentBackground(.hidden)
-                    .background(.clear)
-                    .frame(height: 400)
                 }
             
             VStack {
