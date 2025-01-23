@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		712FB1062D42663400D23939 /* CustomTemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FB1052D42663400D23939 /* CustomTemperatureView.swift */; };
 		714BD9042D40F1AC0052ACCF /* WeatherConditionSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9032D40F1AC0052ACCF /* WeatherConditionSwiftUIApp.swift */; };
 		714BD9062D40F1AC0052ACCF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714BD9052D40F1AC0052ACCF /* ContentView.swift */; };
 		714BD9082D40F1AD0052ACCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 714BD9072D40F1AD0052ACCF /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		712FB1052D42663400D23939 /* CustomTemperatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTemperatureView.swift; sourceTree = "<group>"; };
 		714BD9002D40F1AC0052ACCF /* WeatherConditionSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherConditionSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		714BD9032D40F1AC0052ACCF /* WeatherConditionSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherConditionSwiftUIApp.swift; sourceTree = "<group>"; };
 		714BD9052D40F1AC0052ACCF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				714BD9052D40F1AC0052ACCF /* ContentView.swift */,
 				714BD94D2D4100BE0052ACCF /* WeatherView.swift */,
 				714BD94F2D4100D20052ACCF /* FavouritesView.swift */,
+				712FB1052D42663400D23939 /* CustomTemperatureView.swift */,
 				714BD9452D40F7720052ACCF /* WeatherViewModel.swift */,
 				714BD9472D40F8F00052ACCF /* FavouritesViewModel.swift */,
 				714BD94B2D40FCE30052ACCF /* LocationServices.swift */,
@@ -325,6 +328,7 @@
 				714BD9352D40F5700052ACCF /* LocationDetail.swift in Sources */,
 				714BD9042D40F1AC0052ACCF /* WeatherConditionSwiftUIApp.swift in Sources */,
 				714BD94C2D40FCE30052ACCF /* LocationServices.swift in Sources */,
+				712FB1062D42663400D23939 /* CustomTemperatureView.swift in Sources */,
 				714BD9502D4100D20052ACCF /* FavouritesView.swift in Sources */,
 				714BD9332D40F5420052ACCF /* Weather.swift in Sources */,
 			);

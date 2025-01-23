@@ -54,26 +54,12 @@ struct WeatherView: View {
                     }
                     
                     HStack {
-                        VStack {
-                            Text(viewModel.minimumTemperature)
-                                .fontWeight(.bold)
-                            Text("min")
-                        }
+                        CustomTemperatureView(title: "min", temperature: viewModel.minimumTemperature)
                         Spacer()
-                        VStack {
-                            Text(viewModel.currentTemperature)
-                                .fontWeight(.bold)
-                            Text("Current")
-                        }
+                        CustomTemperatureView(title: "Current", temperature: viewModel.currentTemperature)
                         Spacer()
-                        VStack {
-                            Text(viewModel.maximumTemperature)
-                                .fontWeight(.bold)
-                            Text("max")
-                        }
-                        
+                        CustomTemperatureView(title: "max", temperature: viewModel.maximumTemperature)
                     }
-                    .foregroundStyle(.white)
                     .padding([.leading, .trailing, .top], 8)
                     
                     Divider()
