@@ -40,6 +40,21 @@ struct FavouritesView: View {
                         Text(item.city)
                     }
                     .padding([.leading, .trailing],12)
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button {
+                            updateMapPosition(coordinates: CLLocationCoordinate2DMake(item.latitude, item.longitude))
+                        } label: {
+                            Label("View", systemImage: "eye.fill")
+                        }
+                        .tint(.indigo)
+                        
+                        Button(role: .destructive) {
+                            viewModel.deleteFavouriteLocation(city: item.city)
+                            viewModel.loadFavouriteLocations()
+                        } label: {
+                            Label("Delete", systemImage: "trash.fill")
+                        }
+                    }
                 }
                
             }
