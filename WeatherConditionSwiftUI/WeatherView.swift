@@ -14,115 +14,14 @@ struct WeatherView: View {
         ScrollView {
             ZStack(alignment: .top) {
                 VStack {
+                    currentConditionsView
                     
-                    ZStack(alignment: .center) {
-                        Image(viewModel.backgroundImage)
-                            .resizable()
-                            .frame(height: 330, alignment: .center)
-                       
-                        VStack(spacing: 10) {
-                            Text(viewModel.currentTemperature)
-                                .fontWeight(.bold)
-                                .font(.system(size: 25))
-                            Text(viewModel.conditions)
-                                .fontWeight(.bold)
-                                .font(.system(size: 20))
-       
-                                VStack(spacing: 8){
-                                    Group {
-                                        Text(viewModel.lastChecked)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 16))
-                                        Text(viewModel.street)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 16))
-                                        Text(viewModel.city)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 16))
-                                        Text(viewModel.province)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 16))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding([.leading], 8)
-                                    
-                                }.padding([.top], 8)
-                               
-                        }
-                        .foregroundStyle(.white)
-                        
-                    }
-                    
-                    HStack {
-                        CustomTemperatureView(title: "min", temperature: viewModel.minimumTemperature)
-                        Spacer()
-                        CustomTemperatureView(title: "Current", temperature: viewModel.currentTemperature)
-                        Spacer()
-                        CustomTemperatureView(title: "max", temperature: viewModel.maximumTemperature)
-                    }
-                    .padding([.leading, .trailing, .top], 8)
-                    
-                    Divider()
-                        .frame(minHeight: 1)
-                        .overlay(Color.white)
+                    temperaturesView
                   
-                        ForEach(viewModel.forcastDetail, id: \.self) { item in
-                            
-                            HStack {
-                                Text(item.day)
-                                    .frame(width: 95, alignment: .leading)
-                                Spacer()
-                                Image(viewModel.getWeatherIcon(theme: item.theme))
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                Spacer()
-                                Text(item.temperature)
-                                    .frame(width: 80, alignment: .trailing)
-                                   
-                            }
-                            .padding([.leading, .trailing],12)
-                            .foregroundStyle(.white)
-                            
-                        }
-                }
-            
-            VStack {
-                if #available(iOS 17.0, *) {
-                    Text("Weather Conditions")
-                        .onChange(of: locationService.coordinate) {
-                            viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                        }.foregroundStyle(.white)
-                } else {
-                    // Fallback on earlier versions
-                    Text("Weather Conditions")
-                        .onChange(of: locationService.coordinate) { _ in
-                            viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                            
-                        }.foregroundStyle(.white)
+                    forcastView
                 }
                 
-                HStack {
-                    
-                    Button("", systemImage: "plus", action: viewModel.confirmLocation)
-                        .tint(.white)
-                    
-                    Spacer()
-                    
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .scaleEffect(1.5)
-                        .opacity(viewModel.showActivityIndicator ? 1 : 0)
-                    Spacer()
-                    
-                    Button("", systemImage: "arrow.clockwise", action: {
-                        
-                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                        
-                    })
-                    .tint(.white)
-                }
-                
-            }.padding(8)
+            headerView
          }
         }.onAppear {
             viewModel.loadSavedData()
@@ -138,7 +37,7 @@ struct WeatherView: View {
         }, message: {
             Text(viewModel.errorMessage)
         })
-        .alert("Alert", isPresented: $viewModel.showConfirmAlert, actions: {
+        .alert("Save Location", isPresented: $viewModel.showConfirmAlert, actions: {
             Button("Yes", role: .none, action: viewModel.saveLocation)
             Button("No", role: .cancel, action: {})
         }, message: {
@@ -146,6 +45,128 @@ struct WeatherView: View {
         })
         
     }
+    
+    // MARK: - Views
+    private var headerView: some View {
+        VStack {
+            if #available(iOS 17.0, *) {
+                Text("Weather Conditions")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .onChange(of: locationService.coordinate) {
+                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                    }
+            } else {
+                // Fallback on earlier versions
+                Text("Weather Conditions")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .onChange(of: locationService.coordinate) { _ in
+                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                    }
+            }
+            
+            HStack {
+                Button("", systemImage: "plus", action: viewModel.confirmLocation)
+                    .tint(.white)
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .scaleEffect(1.5)
+                    .opacity(viewModel.showActivityIndicator ? 1 : 0)
+                Spacer()
+                Button("", systemImage: "arrow.clockwise", action: {
+                    
+                    viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                    
+                })
+                .tint(.white)
+            }
+        }.padding(8)
+    }
+    
+    private var forcastView: some View {
+        ForEach(viewModel.forcastDetail, id: \.self) { item in
+            HStack {
+                Text(item.day)
+                    .frame(width: 95, alignment: .leading)
+                Spacer()
+                Image(viewModel.getWeatherIcon(theme: item.theme))
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                Spacer()
+                Text(item.temperature)
+                    .frame(width: 80, alignment: .trailing)
+                   
+            }
+            .padding([.leading, .trailing],12)
+            .foregroundStyle(.white)
+        }
+    }
+    
+    private var temperaturesView: some View {
+        VStack {
+            HStack {
+                CustomTemperatureView(title: "min", temperature: viewModel.minimumTemperature)
+                Spacer()
+                CustomTemperatureView(title: "Current", temperature: viewModel.currentTemperature)
+                Spacer()
+                CustomTemperatureView(title: "max", temperature: viewModel.maximumTemperature)
+            }
+            .padding([.leading, .trailing, .top], 8)
+            
+            Divider()
+                .frame(minHeight: 1)
+                .overlay(Color.white)
+        }
+    }
+    
+    private var locationDetailsView: some View {
+        VStack(spacing: 8){
+            Group {
+                Text(viewModel.lastChecked)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 16))
+                Text(viewModel.street)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 16))
+                Text(viewModel.city)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 16))
+                Text(viewModel.province)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 16))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding([.leading], 8)
+            
+        }
+        .padding([.top], 8)
+        .foregroundStyle(.white)
+    }
+    
+    private var currentConditionsView: some View {
+        ZStack(alignment: .center) {
+            Image(viewModel.backgroundImage)
+                .resizable()
+                .frame(height: 330, alignment: .center)
+           
+            VStack(spacing: 10) {
+                Text(viewModel.currentTemperature)
+                    .fontWeight(.bold)
+                    .font(.system(size: 25))
+                Text(viewModel.conditions)
+                    .fontWeight(.bold)
+                    .font(.system(size: 20))
+
+                    locationDetailsView
+            }
+            .foregroundStyle(.white)
+        }
+    }
+    
 }
 
 #Preview {
