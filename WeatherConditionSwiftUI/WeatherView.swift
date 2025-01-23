@@ -47,46 +47,6 @@ struct WeatherView: View {
     }
     
     // MARK: - Views
-    private var headerView: some View {
-        VStack {
-            if #available(iOS 17.0, *) {
-                Text("Weather Conditions")
-                    .font(.system(size: 25))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .onChange(of: locationService.coordinate) {
-                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                    }
-            } else {
-                // Fallback on earlier versions
-                Text("Weather Conditions")
-                    .font(.system(size: 25))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .onChange(of: locationService.coordinate) { _ in
-                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                    }
-            }
-            
-            HStack {
-                Button("", systemImage: "plus", action: viewModel.confirmLocation)
-                    .tint(.white)
-                Spacer()
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .scaleEffect(1.5)
-                    .opacity(viewModel.showActivityIndicator ? 1 : 0)
-                Spacer()
-                Button("", systemImage: "arrow.clockwise", action: {
-                    
-                    viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                    
-                })
-                .tint(.white)
-            }
-        }.padding(8)
-    }
-    
     private var forcastView: some View {
         ForEach(viewModel.forcastDetail, id: \.self) { item in
             HStack {
@@ -165,6 +125,44 @@ struct WeatherView: View {
             }
             .foregroundStyle(.white)
         }
+    }
+    
+    private var headerView: some View {
+        VStack {
+            if #available(iOS 17.0, *) {
+                Text("Weather Conditions")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .onChange(of: locationService.coordinate) {
+                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                    }
+            } else {
+                // Fallback on earlier versions
+                Text("Weather Conditions")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .onChange(of: locationService.coordinate) { _ in
+                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                    }
+            }
+            
+            HStack {
+                Button("", systemImage: "plus", action: viewModel.confirmLocation)
+                    .tint(.white)
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .scaleEffect(1.5)
+                    .opacity(viewModel.showActivityIndicator ? 1 : 0)
+                Spacer()
+                Button("", systemImage: "arrow.clockwise", action: {
+                    viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                })
+                .tint(.white)
+            }
+        }.padding(8)
     }
     
 }
