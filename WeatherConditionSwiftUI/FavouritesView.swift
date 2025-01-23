@@ -6,12 +6,71 @@
 //
 
 import SwiftUI
-
+import MapKit
 struct FavouritesView: View {
     @ObservedObject var viewModel: FavouritesViewModel
     @ObservedObject var locationService: LocationServices
+    @State private var position = MapCameraPosition.region(
+        MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: -1.3033, longitude: 36.8264),
+            span: MKCoordinateSpan(latitudeDelta: 6, longitudeDelta: 6)
+        )
+    )
     var body: some View {
-        Text("Favourites!")
+        VStack {
+            if #available(iOS 17.0, *) {
+                Text("Favourite Locations")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .onChange(of: locationService.coordinate) {
+                        updateMapPosition(coordinates: locationService.coordinate.coordinate)
+                    }
+            } else {
+                // Fallback on earlier versions
+                Text("Favourite Locations")
+                    .font(.system(size: 25))
+                    .fontWeight(.semibold)
+                    .onChange(of: locationService.coordinate) { _ in
+                        updateMapPosition(coordinates: locationService.coordinate.coordinate)
+                    }
+            }
+            List {
+                ForEach(viewModel.favouriteLocations, id: \.self) { item in
+                    HStack {
+                        Text(item.city)
+                    }
+                    .padding([.leading, .trailing],12)
+                }
+               
+            }
+            .overlay {
+                if viewModel.favouriteLocations.isEmpty {
+                    Text("No Locations Saved")
+                }
+            }
+            
+            Map(position: $position, content: {
+                ForEach(viewModel.mapAnnotations, id: \.self) { item in
+                    Marker(item.title ?? "", coordinate: item.coordinate)
+                }
+                UserAnnotation()
+            })
+            .frame(height: 450)
+                
+            
+        }.onAppear {
+            viewModel.loadFavouriteLocations()
+            updateMapPosition(coordinates: locationService.coordinate.coordinate)
+        }
+    }
+    
+    func updateMapPosition(coordinates: CLLocationCoordinate2D){
+         position = MapCameraPosition.region(
+                     MKCoordinateRegion(
+                         center: CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude),
+                         span: MKCoordinateSpan(latitudeDelta: 6, longitudeDelta: 6)
+                     )
+                 )
     }
 }
 

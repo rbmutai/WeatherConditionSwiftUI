@@ -31,7 +31,7 @@ struct AddressDetail: Decodable {
     }
 }
 
-struct FavouriteLocationDetail {
+struct FavouriteLocationDetail: Hashable {
     let street: String
     let city: String
     let province: String
