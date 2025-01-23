@@ -73,10 +73,16 @@ struct FavouritesView: View {
             .frame(height: 450)
                 
             
-        }.onAppear {
+        }
+        .onAppear {
             viewModel.loadFavouriteLocations()
             updateMapPosition(coordinates: locationService.coordinate.coordinate)
         }
+        .alert("Error", isPresented: $locationService.showErrorAlert, actions: {
+            Button("Cancel", role: .cancel, action: {})
+        }, message: {
+            Text(locationService.errorMessage)
+        })
     }
     
     func updateMapPosition(coordinates: CLLocationCoordinate2D){
