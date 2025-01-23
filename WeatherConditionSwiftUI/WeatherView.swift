@@ -13,7 +13,20 @@ struct WeatherView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Weather Conditions")
+                if #available(iOS 17.0, *) {
+                    Text("Weather Conditions")
+                        .onChange(of: locationService.coordinate) { oldValue, newValue in
+                            
+                            viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                    }
+                } else {
+                    // Fallback on earlier versions
+                    Text("Weather Conditions")
+                        .onChange(of: locationService.coordinate) { _ in
+                            viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                        
+                        }
+                }
 
                 HStack {
                     
@@ -29,11 +42,8 @@ struct WeatherView: View {
                     
                     Button("", systemImage: "arrow.clockwise", action: {
                         
-                        Task {
-                            await  viewModel.getWeather(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                            
-                            await  viewModel.getLocationDetail(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
-                        }
+                        viewModel.fetchAllDetails(latitude: locationService.coordinate.coordinate.latitude, longitude: locationService.coordinate.coordinate.longitude)
+                        
                     })
                    
                     
@@ -43,17 +53,6 @@ struct WeatherView: View {
             }
         }.onAppear {
             viewModel.loadSavedData()
-            
-            locationService.$coordinate
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { value in
-                    Task {
-                        await  viewModel.getWeather(latitude: value.coordinate.latitude, longitude: value.coordinate.longitude)
-                        
-                        await  viewModel.getLocationDetail(latitude: value.coordinate.latitude, longitude: value.coordinate.longitude)
-                    }
-                })
-                .store(in: &locationService.subscribers)
         }
         .alert("Error", isPresented: $locationService.showErrorAlert, actions: {
             Button("Cancel", role: .cancel, action: {})

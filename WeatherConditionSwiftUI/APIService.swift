@@ -6,11 +6,11 @@
 //
 
 import Foundation
-
+import Combine
 protocol APIServiceProtocol {
-    func fetchCurrentWeather(latitude: Double, longitude: Double) async throws -> Current
-    func fetchWeatherForcast(latitude: Double, longitude: Double) async throws -> [Current]
-    func fetchLocationDetail(latitude: Double, longitude: Double) async throws -> [ResultDetail]
+    func fetchCurrentWeather(latitude: Double, longitude: Double) -> AnyPublisher<Current, ResultError>
+    func fetchWeatherForcast(latitude: Double, longitude: Double) ->  AnyPublisher<Forcast, ResultError>
+    func fetchLocationDetail(latitude: Double, longitude: Double) ->  AnyPublisher<LocationDetail, ResultError>
 }
 
 enum ResultError: Error {
@@ -32,63 +32,59 @@ class APIService: APIServiceProtocol {
     let googleAPI = "https://maps.googleapis.com/"
     let geoCodePath = "maps/api/geocode/json?"
     
-    func fetchCurrentWeather(latitude: Double, longitude: Double) async throws -> Current {
+    func fetchCurrentWeather(latitude: Double, longitude: Double) -> AnyPublisher<Current, ResultError> {
         let weatherURL = openWeatherAPI + currentWeatherPath + "lat=\(latitude)&lon=\(longitude)&units=metric&appid=" + apiKey
         
         guard let url = URL(string: weatherURL) else {
-            throw ResultError.data
+            return Fail(error: ResultError.data).eraseToAnyPublisher()
         }
         
         var urlRequest = URLRequest(url: url)
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let (data, _) =  try await URLSession.shared.data(for: urlRequest)
-        
-        let decoder = JSONDecoder()
-        
-        let weather = try decoder.decode(Current.self, from: data)
-        
-        return weather
+        return fetchData(urlRequest: urlRequest)
     }
     
-    func fetchWeatherForcast(latitude: Double, longitude: Double) async throws -> [Current] {
+    func fetchWeatherForcast(latitude: Double, longitude: Double) -> AnyPublisher<Forcast, ResultError> {
         let weatherURL = openWeatherAPI + forcastPath + "lat=\(latitude)&lon=\(longitude)&units=metric&appid=" + apiKey
        
         guard let url = URL(string: weatherURL) else {
-            throw ResultError.data
+            return Fail(error: ResultError.data).eraseToAnyPublisher()
         }
         
         var urlRequest = URLRequest(url: url)
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let (data, _) =  try await URLSession.shared.data(for: urlRequest)
-        
-        let decoder = JSONDecoder()
-        
-        let weather = try decoder.decode(Forcast.self, from: data)
-        let forcast = weather.list
-        
-        return forcast
+        return fetchData(urlRequest: urlRequest)
     }
     
-    func fetchLocationDetail(latitude: Double, longitude: Double) async throws -> [ResultDetail] {
+    func fetchLocationDetail(latitude: Double, longitude: Double) -> AnyPublisher<LocationDetail, ResultError> {
         let googleURL = googleAPI + geoCodePath + "latlng=\(latitude),\(longitude)&key=" + googleAPIKey
        
         guard let url = URL(string: googleURL) else {
-            throw ResultError.data
+            return Fail(error: ResultError.data).eraseToAnyPublisher()
         }
         
         var urlRequest = URLRequest(url: url)
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let (data, _) =  try await URLSession.shared.data(for: urlRequest)
-        
-        let decoder = JSONDecoder()
-        
-        let locationDetail = try decoder.decode(LocationDetail.self, from: data)
-        
-        return locationDetail.results
+        return fetchData(urlRequest: urlRequest)
     }
     
+    private func fetchData<T>(urlRequest: URLRequest)-> AnyPublisher<T, ResultError> where T:Decodable {
+        
+        return URLSession.shared.dataTaskPublisher(for: urlRequest)
+            .mapError { error in
+                ResultError.network
+            }
+            .flatMap(maxPublishers: .max(1)) { pair in
+                Just(pair.data)
+                  .decode(type: T.self, decoder: JSONDecoder())
+                  .mapError { error in
+                      ResultError.data
+                  }
+            }
+            .eraseToAnyPublisher()
+    }
     
 }

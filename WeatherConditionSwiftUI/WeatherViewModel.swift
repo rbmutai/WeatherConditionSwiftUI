@@ -31,6 +31,7 @@ class WeatherViewModel: ObservableObject {
     @Published var refreshEnabled = true
     @Published var weatherTheme: ConditionTheme = .none
     @Published var forcastDetail: [ForcastDetail] = []
+    private var subscribers = Set<AnyCancellable>()
     var latitude = 0.0
     var longitude = 0.0
     let persistence = PersistenceController.shared
@@ -39,53 +40,90 @@ class WeatherViewModel: ObservableObject {
         self.apiService = apiService
     }
     
-    func getWeather (latitude: Double, longitude: Double) async {
+    
+    func getCurrentWeather(latitude: Double, longitude: Double) {
         
-            do {
-               
-                showActivityIndicator = true
-                refreshEnabled = false
+        showActivityIndicator = true
+        refreshEnabled = false
+        
+        apiService.fetchCurrentWeather(latitude: latitude, longitude: longitude)
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] value in
+                showActivityIndicator = false
+                refreshEnabled = true
+                switch value {
+                case .finished:
+                    break
+                case .failure(let error):
+                    processError(error: error)
+                }
                 
-                async let currentWeather = apiService.fetchCurrentWeather(latitude: latitude, longitude: longitude)
-                
-                async let weatherForcast = apiService.fetchWeatherForcast(latitude: latitude, longitude: longitude)
-               
-                let (current, forcast) = try await (currentWeather, weatherForcast)
+            } receiveValue: { [unowned self] current in
                 
                 updateCurrentWeatherDetails(current: current)
                 
-                updateWeatherForcastDetails(forcast: forcast)
+            }.store(in: &subscribers)
+
+
+
+        self.latitude = latitude
+        self.longitude = longitude
                 
+    }
+    
+    func getWeatherForcast(latitude: Double, longitude: Double) {
+        
+        showActivityIndicator = true
+        refreshEnabled = false
+        
+        apiService.fetchWeatherForcast(latitude: latitude, longitude: longitude)
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] value in
                 showActivityIndicator = false
                 refreshEnabled = true
-                self.latitude = latitude
-                self.longitude = longitude
+                switch value {
+                case .finished:
+                    break
+                case .failure(let error):
+                    processError(error: error)
+                }
+            } receiveValue: { [unowned self] forcast in
                 
-            } catch {
+                let forcastDetail = forcast.list
+                updateWeatherForcastDetails(forcast: forcastDetail)
+                
+            }.store(in: &subscribers)
+    }
+    
+    func getLocationDetail(latitude: Double, longitude: Double) {
+       
+        showActivityIndicator = true
+        refreshEnabled = false
+        
+        apiService.fetchLocationDetail(latitude: latitude, longitude: longitude)
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] value in
                 showActivityIndicator = false
                 refreshEnabled = true
-                processError(error: error)
-            }
+                switch value {
+                case .finished:
+                    break
+                case .failure(let error):
+                    processError(error: error)
+                }
+            } receiveValue: { [unowned self] location in
+                
+                let locationDetail = location.results
+                updateLocationDetails(results: locationDetail)
+                
+            }.store(in: &subscribers)
         
     }
     
-    func getLocationDetail(latitude: Double, longitude: Double) async {
-        
-        do {
-            showActivityIndicator = true
-            refreshEnabled = false
-            
-            let results = try await apiService.fetchLocationDetail(latitude: latitude, longitude: longitude)
-            updateLocationDetails(results: results)
-            
-            showActivityIndicator = false
-            refreshEnabled = true
-            
-        } catch  {
-            showActivityIndicator = false
-            refreshEnabled = true
-            processError(error: error)
-        }
+    func fetchAllDetails(latitude: Double, longitude: Double) {
+        getCurrentWeather(latitude: latitude, longitude: longitude)
+        getWeatherForcast(latitude: latitude, longitude: longitude)
+        getLocationDetail(latitude: latitude, longitude: longitude)
     }
     
     func processError(error: Error){

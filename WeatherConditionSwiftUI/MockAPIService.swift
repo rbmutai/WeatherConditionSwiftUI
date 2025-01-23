@@ -6,60 +6,63 @@
 //
 
 import Foundation
-
+import Combine
 class MockAPIService: APIServiceProtocol {
-    func fetchCurrentWeather(latitude: Double, longitude: Double) async throws -> Current {
+    func fetchCurrentWeather(latitude: Double, longitude: Double) -> AnyPublisher<Current, ResultError> {
+        
         guard let bundleUrl = Bundle.main.url(forResource: "CurrentWeather", withExtension: "json") else {
-            throw ResultError.data }
+            return Fail(error: ResultError.data).eraseToAnyPublisher()
+        }
         
         do {
             let data = try Data(contentsOf: bundleUrl)
             
-            let decoder = JSONDecoder()
-            
-            let weather = try decoder.decode(Current.self, from: data)
-            
-            return weather
+            return fetchData(data: data)
             
         } catch {
-            throw ResultError.parsing
+            return Fail(error: ResultError.parsing).eraseToAnyPublisher()
         }
     }
     
-    func fetchWeatherForcast(latitude: Double, longitude: Double) async throws -> [Current] {
+    func fetchWeatherForcast(latitude: Double, longitude: Double) -> AnyPublisher<Forcast, ResultError> {
         guard let bundleUrl = Bundle.main.url(forResource: "ForcastWeather", withExtension: "json") else {
-            throw ResultError.data }
+            return Fail(error: ResultError.data).eraseToAnyPublisher()
+        }
         
         do {
             let data = try Data(contentsOf: bundleUrl)
             
-            let decoder = JSONDecoder()
-            
-            let weather = try decoder.decode(Forcast.self, from: data)
-            let forcast = weather.list
-            
-            return forcast
+            return fetchData(data: data)
             
         } catch {
-            throw ResultError.parsing
+            return Fail(error: ResultError.parsing).eraseToAnyPublisher()
         }
     }
     
-    func fetchLocationDetail(latitude: Double, longitude: Double) async throws -> [ResultDetail] {
+    func fetchLocationDetail(latitude: Double, longitude: Double) -> AnyPublisher<LocationDetail, ResultError> {
+        
         guard let bundleUrl = Bundle.main.url(forResource: "LocationDetailData", withExtension: "json") else {
-            throw ResultError.data }
+            return Fail(error: ResultError.data).eraseToAnyPublisher()
+        }
         
         do {
             let data = try Data(contentsOf: bundleUrl)
             
-            let decoder = JSONDecoder()
-            let locationDetail = try decoder.decode(LocationDetail.self, from: data)
-            
-            return locationDetail.results
+            return fetchData(data: data)
             
         } catch {
-            throw ResultError.parsing
+            return Fail(error: ResultError.parsing).eraseToAnyPublisher()
         }
+    }
+    
+    private func fetchData<T>(data: Data)-> AnyPublisher<T, ResultError> where T:Decodable {
+        
+        return  Just(data)
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { error in
+                ResultError.data
+            }
+            .eraseToAnyPublisher()
     }
     
 }

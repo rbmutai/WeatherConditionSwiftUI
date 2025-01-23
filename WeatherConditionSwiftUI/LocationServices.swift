@@ -13,7 +13,6 @@ class LocationServices: NSObject, CLLocationManagerDelegate, ObservableObject {
     @Published var coordinate: CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
     @Published var errorMessage = ""
     @Published var showErrorAlert = false
-    var subscribers = Set<AnyCancellable>()
     override init() {
         super.init()
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
