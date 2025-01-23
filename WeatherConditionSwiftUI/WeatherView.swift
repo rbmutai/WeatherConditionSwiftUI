@@ -23,8 +23,6 @@ struct WeatherView: View {
                 
             headerView
          }
-        }.onAppear {
-            viewModel.loadSavedData()
         }
         .background(Color(viewModel.backgroundColor))
         .alert("Error", isPresented: $locationService.showErrorAlert, actions: {
